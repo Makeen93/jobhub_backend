@@ -8,8 +8,8 @@ const router = require("express").Router();
 
 router.put("/", verifyAndAuthorization,userController.updateUser);
 router.delete("/", verifyAndAuthorization,userController.deleteUser);
-router.get("/", verifyAndAuthorization,userController.getUser);
-// router.get("/", verifyAndAdmin,userController.getAllUsers);
+router.get("/:id", verifyAndAuthorization,userController.getUser);
+router.get("/", verifyAndAdmin,userController.getAllUsers);
 
 
 
