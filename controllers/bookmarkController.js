@@ -19,7 +19,9 @@ module.exports = {
     },
     deleteBookmark:async (req,res)=>{
         try {
-            await Bookmark.findOneAndDelete(req.params.id);// const {__v,createdAt,updatedAt,...newJobInfo}=savedJob._doc;
+            const userId=req.user.id;
+            const jobId=req.params.id;
+            await Bookmark.findOneAndDelete({userId,jobId});// const {__v,createdAt,updatedAt,...newJobInfo}=savedJob._doc;
             res.status(200).json("BookMark Successfully Deleted");
         } catch (error) {
             res.status(500).json(error);
@@ -27,7 +29,7 @@ module.exports = {
     },
     getBookmarks:async (req,res)=>{
         try {
-            const bookmarks=await Bookmark.find({userId:req.params.userId});
+            const bookmarks=await Bookmark.find({userId:req.user.id});
             res.status(200).json(bookmarks);
         } catch (error) {
             res.status(500).json(error);
