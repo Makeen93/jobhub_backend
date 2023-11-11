@@ -29,7 +29,7 @@ module.exports = {
     },
     getBookmarks:async (req,res)=>{
         try {
-            const bookmarks=await Bookmark.find({userId:req.user.id});
+            const bookmarks=await Bookmark.find({userId:req.user.id}).populate("job");
             res.status(200).json(bookmarks);
         } catch (error) {
             res.status(500).json(error);
