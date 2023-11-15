@@ -3,7 +3,7 @@ const User = require("../models/User");
 
 module.exports = {
     accessMessage: async (req, res) => {
-        const{userOd}=req.body;
+        const{userId}=req.body;
         if(!userId){
             return res.status(400).json({
                 message: "Invalid user ID"
@@ -39,14 +39,14 @@ module.exports = {
     },
     getChat: async (req, res) => {
         try {
-            Chat.find({ users: { $elemMatch: { $eq: req.User.id } } })
+            Chat.find({ users: { $elemMatch: { $eq: req.user.id } } })
                 .populate("users", "-password")
                 .populate("groupAdmin", "-password")
                 .populate("latestMessage")
                 .sort({ updateAt: -1 })
-                .then(async (result) => {
+                .then(async (results) => {
                     results = await User.populate(results, { path: "latestMessage.sender", select: "username profile email" });
-                    res.status(200).send(result);
+                    res.status(200).send(results);
                 })
         } catch (errors) {
             res.status(500).json("failed to retrieve chat",)

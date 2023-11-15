@@ -14,7 +14,7 @@ module.exports = {
                 .sort({createdAt:-1})
                 .skip(skipMessage)
                 .limit(pagesize);
-                messages=await User.populate(message,{path:"chat.users",select:"username profile email"});
+                messages=await User.populate(messages,{path:"chat.users",select:"username profile email"});
                 res.json(messages);
         }catch(error){
             res.status(500).json({error:"Could not retrieve messages"});
@@ -38,7 +38,7 @@ module.exports = {
             message=await message.populate("sender","username profile email")
             message=await message.populate("chat")
             message=await User.populate(message,{path:"chat.users",select:"username profile email"});
-            await Chat.findByIdAndUpdate(req.body.chatId,{lastestMessage:message});
+            await Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message});
             res.json(message);
         }catch(error){
             res.status(400).json({error:error});
