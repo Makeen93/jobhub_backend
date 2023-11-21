@@ -9,12 +9,12 @@ module.exports = {
             const page=req.query.page||1;
             const skipMessage=(page-1)*pagesize;
             var messages=await Message.find({chat:req.params.id})
-                .populate("sender","username profile email")
+                .populate("sender","userName profile email")
                 .populate('chat')
                 .sort({createdAt:-1})
                 .skip(skipMessage)
                 .limit(pagesize);
-                messages=await User.populate(messages,{path:"chat.users",select:"username profile email"});
+                messages=await User.populate(messages,{path:"chat.users",select:"userName profile email"});
                 res.json(messages);
         }catch(error){
             res.status(500).json({error:"Could not retrieve messages"});
@@ -35,9 +35,9 @@ module.exports = {
 
         try{
             var message=await Message.create(newMessage);
-            message=await message.populate("sender","username profile email")
+            message=await message.populate("sender","userName profile email")
             message=await message.populate("chat")
-            message=await User.populate(message,{path:"chat.users",select:"username profile email"});
+            message=await User.populate(message,{path:"chat.users",select:"userName profile email"});
             await Chat.findByIdAndUpdate(req.body.chatId,{latestMessage:message});
             res.json(message);
         }catch(error){

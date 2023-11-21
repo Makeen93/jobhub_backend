@@ -45,7 +45,7 @@ module.exports = {
                 .populate("latestMessage")
                 .sort({ updateAt: -1 })
                 .then(async (results) => {
-                    results = await User.populate(results, { path: "latestMessage.sender", select: "username profile email" });
+                    results = await User.populate(results, { path: "latestMessage.sender", select: "userName profile email" });
                     res.status(200).send(results);
                 })
         } catch (errors) {
